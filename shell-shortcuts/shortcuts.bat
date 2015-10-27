@@ -60,7 +60,7 @@ function showmenu {
 				$global:count++
 				If ($global:count -eq $choice) {
 					$global:found = $True
-					Start-Process -FilePath "cmd.exe" -ArgumentList ('/c "{0}" & TIMEOUT 3' -f $_)
+					Start-Process -FilePath "cmd.exe" -ArgumentList ('/c "{0}" & TIMEOUT 30' -f $_)
 				}
 			}
 		}
