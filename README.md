@@ -2,10 +2,7 @@
 Run many predefined shell commands from a single launcher.
 
 ## Why
-When developing with ```node``` on Windows, you find that many times a day you have click the start button and find ```cmd.exe```, then navigate to the folder you are working on using a few ```cd``` commands, then type out a command such as
-```
-npm init
-```
+When developing with ```node``` on Windows, you find that many times a day you have click the start button and find ```cmd.exe```, then navigate to the folder you are working on (using a few ```cd``` commands), then type out a command such as ```npm init```.
 This script is designed to save time (all the steps above) when developing with software that requires command line interaction on Windows (such as ```node```, ```bower```, ```jspm```, ```sass```, ```grunt```, etc). 
 
 ## How
