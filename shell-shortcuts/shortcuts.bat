@@ -4,26 +4,24 @@
 @@set LF=^
 
 
-@@SET command=#
+@@IF [%1] EQU [] (SET "command=$shortcutsfile='%~dp0shortcuts.txt'") ELSE (SET "command=$shortcutsfile='%~f1'")
+@@SET "command=!command!!LF!$wd='%~dp0'"
 @@FOR /F "tokens=*" %%i in ('Findstr -bv @@ "%~f0"') DO SET command=!command!!LF!%%i
-@@START powershell -noexit -command !command! & goto:eof
+@@START PowerShell -noexit -command !command! & goto:eof
 #powershell script starts below this line
 
-$shortcutsfile = 'shortcuts.txt'
-$shortcutsfilepath = ('{0}\{1}' -f $pwd, $shortcutsfile)
-$shortcutstxt = Get-Content "$shortcutsfilepath"
-
-$wd = Split-Path -Path $pwd -Parent
+$shortcutstxt = Get-Content "$shortcutsfile"
+$wd = Split-Path -Path $wd -Parent					#comment this line, to run in the same dir as the .bat, rather than parent dir
 Set-Location "$wd"
 
 function showmenu {
 	
 	Clear-Host
 	Write-Host ""
-	Write-Host ' shorcuts from:' -NoNewline
-	Write-Host "`t`t$shortcutsfilepath" -fore Green
 	Write-Host ' working directory:' -NoNewline
 	Write-Host "`t$wd" -fore Green
+	Write-Host ' shorcuts from:' -NoNewline
+	Write-Host "`t`t$shortcutsfile" -fore Green
 	Write-Host ""
 
 	Write-Host ' Available commands:'
