@@ -10,13 +10,7 @@ The script is run with a double click, it reads the lines of ```shortcuts.txt```
 A menu is then created and displayed in a ```powershell``` window, each command has its own number. You can then simply select the command by its menu number and it is run in a new cmd.exe window.
 
 ## Install
-Download the zip file https://github.com/norgeous/shell-shortcuts/archive/master.zip and extract the ```shell-shortcuts``` directory into the root of your project folder.
-
-For example, if your project folder was ```C:\myawesomeproject``` then you should then have the following files:
-```
-C:\myawesomeproject\shell-shortcuts\shortcuts.bat
-C:\myawesomeproject\shell-shortcuts\shortcuts.txt
-```
+Download the zip file https://github.com/norgeous/shell-shortcuts/archive/master.zip and extract ```shortcuts.bat``` and ```shortcuts.txt```into the root of your project folder.
 
 ## Configure
 Open ```shortcuts.txt``` in a text editor to add or remove commands. Each command is on its own line.
@@ -37,8 +31,9 @@ npm install
 ipconfig /flushdns
 cmd
 ```
-Note: All commands are run in the directory that is one above the ```shortcuts.bat``` file. For example, if your project is at ```C:\myawesomeproject``` the commands are run in the context of ```C:\myawesomeproject``` (rather than in the context of the ```C:\myawesomeproject\shell-shortcuts``` subfolder)
+Will create this menu:
+![ScreenShot](preview.png)
 
 ## Usage
 Double click the file ```shortcuts.bat``` and type a number shown in the menu.
-![ScreenShot](preview.png)
+Alternately, you can use multiple ```.txt``` files, just drag them onto the ```.bat``` file.

@@ -8,10 +8,13 @@
 @@SET "command=!command!!LF!$wd='%~dp0'"
 @@FOR /F "tokens=*" %%i in ('Findstr -bv @@ "%~f0"') DO SET command=!command!!LF!%%i
 @@START PowerShell -noexit -command !command! & goto:eof
-#powershell script starts below this line
+
+
+# uncomment the next line to run in the parent directory instead (one directory above this)
+#$wd = Split-Path -Path $wd -Parent
+
 
 $shortcutstxt = Get-Content "$shortcutsfile"
-$wd = Split-Path -Path $wd -Parent					#comment this line, to run in the same dir as the .bat, rather than parent dir
 Set-Location "$wd"
 
 function showmenu {
