@@ -20,7 +20,7 @@ Serves as a reminder for those hard-to-remember commands.
 
 
 ## Install
-Download the latest ```shortcuts.bat``` from https://github.com/norgeous/shell-shortcuts/releases/ and add it into your project folder root (or where you want the menu commands to be run from). You can rename it to something else, if you like.
+Download the latest ```shortcuts.bat``` from https://github.com/norgeous/shell-shortcuts/releases/latest and add it into your project folder root (or where you want the menu commands to be run from). You can rename it to something else, if you like.
 
 ## Configure
 Create ```shortcuts.txt``` in the same folder as ```shortcuts.bat``` and write each command that you want listed in the menu on its own line.
