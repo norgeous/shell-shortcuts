@@ -11,13 +11,11 @@
 
 $shortcutstxt = Get-Content "$shortcutsfile"
 $shortcutstxt | Foreach-Object {
-	If ($_) {
-		If ($_.StartsWith('##wd=')) {
-			$wd = $_.substring(5)
-		}
-		If ($_.StartsWith('##after=')) {
-			$after = $_.substring(8)
-		}
+	If ($_.StartsWith('##wd=')) {
+		$wd = $_.substring(5)
+	}
+	If ($_.StartsWith('##after=')) {
+		$after = $_.substring(8)
 	}
 }
 
@@ -36,21 +34,18 @@ function showmenu {
 		Write-Host "`t`& $after" -fore Yellow
 	}
 
-
 	$global:count = 0
 	$shortcutstxt | Foreach-Object {
-		If ($_) {
-			If (-Not $_.StartsWith('##')) {
-				If ($_.StartsWith('#')) {
-					$comment = $_.substring(1) 
-					Write-Host ""
-					Write-Host "`t$comment"
-				} Else {
-					$global:count++
-					Write-Host "`t $global:count" -NoNewline -fore Cyan
-					Write-Host ': ' -NoNewline
-					Write-Host "$_" -fore Yellow
-				}
+		If ($_ -And -Not $_.StartsWith('##')) {		
+			If ($_.StartsWith('#')) {
+				$sectiontitle = $_.substring(1)
+				Write-Host ""
+				Write-Host "`t$sectiontitle"
+			} Else {
+				$global:count++
+				Write-Host "`t $global:count" -NoNewline -fore Cyan
+				Write-Host ': ' -NoNewline
+				Write-Host "$_" -fore Yellow
 			}
 		}
 	}
@@ -67,20 +62,16 @@ function showmenu {
 	$global:count = 0
 	$global:found = $False
 	$shortcutstxt | Foreach-Object {
-		If ($_) {
-			If (-Not $_.StartsWith('##')) {
-				If (-Not $_.StartsWith('#')) {
-					$global:count++
-					If ($global:count -eq $choice) {
-						$global:found = $True
-						If ($after) {
-							$arguments = '/c ECHO {0} & {0} & {1}' -f $_, $after
-						} Else {
-							$arguments = '/c ECHO {0} & {0}' -f $_
-						}
-						Start-Process -FilePath "cmd.exe" -ArgumentList $arguments
-					}
+		If ($_ -And -Not $_.StartsWith('#')) {
+			$global:count++
+			If ($global:count -eq $choice) {
+				$global:found = $True
+				If ($after) {
+					$arguments = '/c ECHO {0} & {0} & {1}' -f $_, $after
+				} Else {
+					$arguments = '/c ECHO {0} & {0}' -f $_
 				}
+				Start-Process -FilePath "cmd.exe" -ArgumentList $arguments
 			}
 		}
 	}
