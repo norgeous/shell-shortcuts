@@ -1,5 +1,4 @@
 # shell-shortcuts
-Run many predefined shell commands from a single launcher.
 Create a custom menu of predefined shell commands.
 
 ![ScreenShot](preview.png)
