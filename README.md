@@ -19,12 +19,8 @@ Serves as a reminder for those hard-to-remember commands.
 
 
 
-
-
 ## Install
-Just add ```shortcuts.bat``` into your project folder root (or where you want the menu commands to be run from). You can rename it to something else, if you like.
-
-
+Download the latest ```shortcuts.bat``` from https://github.com/norgeous/shell-shortcuts/releases/ and add it into your project folder root (or where you want the menu commands to be run from). You can rename it to something else, if you like.
 
 ## Configure
 Create ```shortcuts.txt``` in the same folder as ```shortcuts.bat``` and write each command that you want listed in the menu on its own line.
@@ -55,7 +51,6 @@ All blank lines are ignored.
 ## Usage
 Just double click ```shortcuts.bat``` to load ```shortcuts.txt``` (by default) then select a command by typing its number.
 The commands are run in the same folder as ```shortcuts.bat```.
-
 
 You can use multiple files for configuring different custom menus, just drag any ```*.txt``` file (containing a configuration as shown above) onto ```shortcuts.bat```.
 
