@@ -74,7 +74,7 @@ function showmenu {
 					If ($global:count -eq $choice) {
 						$global:found = $True
 						If ($after) {
-							$arguments = '/c ECHO {0} & {0} & "{1}"' -f $_, $after
+							$arguments = '/c ECHO {0} & {0} & {1}' -f $_, $after
 						} Else {
 							$arguments = '/c ECHO {0} & {0}' -f $_
 						}
