@@ -82,9 +82,9 @@ jspm unbundle
 
 ### Application mode
 If you like using ```shortcuts.bat``` and find yourself doing so regularly, you can do the following trick.
-Rename the extension of your ```shortcuts.txt``` config file(s) to somthing else that you know is unused on your system, for example ```shortcuts.ssc```.
+Rename the extension of your ```shortcuts.txt``` config file(s) to something else that you know is unused on your system, for example ```shortcuts.ssc```.
 Then you can associate that file extension with ```shortcuts.bat``` using the ```Open With...``` dialogue.
-Dragging a ```.txt``` config file onto the ```shortcuts.bat``` is now no longer required... you can just double click the config ```.ssc``` file.
+Now you can double click an ```.ssc``` file to open the custom menu.
 
 
 ### Keeping the child ```cmd``` window open
