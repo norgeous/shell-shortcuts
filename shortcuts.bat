@@ -21,17 +21,19 @@ $shortcutstxt | Foreach-Object {
 
 Set-Location "$wd"
 
+function Write-Color([String[]]$Text, [ConsoleColor[]]$Color) {
+	for ($i = 0; $i -lt $Text.Length; $i++) {Write-Host "$Text[$i]" -Foreground $Color[$i] -NoNewLine}
+	Write-Host
+}
+
 function showmenu {
 	
 	Clear-Host
-	Write-Host ""
-	Write-Host ' shorcuts from:' -NoNewline
-	Write-Host "`t`t$shortcutsfile" -fore Green
-	Write-Host ' working directory:' -NoNewline
-	Write-Host "`t$wd" -fore Green
+	Write-Host
+	Write-Color -Text ' shorcuts from:',"`t`t$shortcutsfile" -Color Gray,Green
+	Write-Color -Text ' working directory:',"`t$wd" -Color Gray,Green
 	If ($after) {
-		Write-Host ' after each command:' -NoNewline
-		Write-Host "`t`& $after" -fore Yellow
+		Write-Color -Text ' after each command:',"`t","`&",' ',$after -Color Gray,White,DarkGreen,DarkGreen,DarkGreen
 	}
 
 	$global:count = 0
@@ -39,25 +41,19 @@ function showmenu {
 		If ($_ -And -Not $_.StartsWith('##')) {		
 			If ($_.StartsWith('#')) {
 				$sectiontitle = $_.substring(1)
-				Write-Host ""
-				Write-Host "`t$sectiontitle"
+				Write-Host
+				Write-Color -Text "`t$sectiontitle" -Color DarkCyan
 			} Else {
 				$global:count++
-				Write-Host "`t $global:count" -NoNewline -fore Cyan
-				Write-Host ': ' -NoNewline
-				Write-Host "$_" -fore Yellow
+				Write-Color -Text "`t",' ',$global:count,': ',"$_" -Color White,White,Cyan,White,Yellow
 			}
 		}
 	}
 
-    Write-Host ""
-    Write-Host ' Enter command number (' -NoNewline
-    Write-Host "1" -NoNewline -fore Cyan
-    Write-Host ' to ' -NoNewline
-    Write-Host $count -NoNewline -fore Cyan
-    Write-Host ')'
-    $choice = Read-Host -prompt ' '
-	Write-Host ""
+	Write-Host
+	Write-Color -Text ' Enter command number (','1',' to ',$count,')' -Color White,Cyan,White,Cyan,White
+	$choice = Read-Host -prompt ' '
+	Write-Host
 
 	$global:count = 0
 	$global:found = $False
@@ -79,7 +75,7 @@ function showmenu {
 	If (-Not $global:found) {
 	   Write-Host (' Menu item `"{0}`" not found' -f $choice) -fore Magenta
 	   TIMEOUT 5
-    }
+	}
 
 	showmenu
 }

@@ -65,8 +65,10 @@ You can chain together multiple commands to run as one menu entry in ```shortcut
 jspm init & ECHO hello & PAUSE
 ```
 
+
 ### Change the working directory
-If you want to run the menu commands in a different folder to the location of ```shortcuts.bat``` include ```##wd=``` in your ```shortcuts.txt``` to change the working directory for all commands.
+By default the menu commands are run from the folder that ```shortcuts.bat``` is in.
+If you don't want any of these files to be included in your project folder and you can define a different folder by including ```##wd=``` in your ```shortcuts.txt``` to change the working directory for all commands.
 ```
 ##wd=c:\some\dir\path
 #jspm
@@ -76,6 +78,14 @@ jspm-server
 jspm bundle lib/main --inject
 jspm unbundle
 ```
+
+
+### Application mode
+If you like using ```shortcuts.bat``` and find yourself doing so regularly, you can do the following trick.
+Rename the extension of your ```shortcuts.txt``` config file(s) to somthing else that you know is unused on your system, for example ```shortcuts.ssc```.
+Then you can associate that file extension with ```shortcuts.bat``` using the ```Open With...``` dialogue.
+Dragging a ```.txt``` config file onto the ```shortcuts.bat``` is now no longer required... you can just double click the config ```.ssc``` file.
+
 
 ### Keeping the child ```cmd``` window open
 By default, the spawned ```cmd``` window will close after execution finishes. If you would like to review the output you can introduce a pause to all commands by adding ```##after=PAUSE``` to ```shortcuts.txt```
