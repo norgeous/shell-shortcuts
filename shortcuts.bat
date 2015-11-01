@@ -11,14 +11,10 @@
 @@FOR /F "tokens=*" %%i in ('Findstr -bv @@ "%~f0"') DO SET command=!command!!LF!%%i
 @@SET "ps1file=%temp%\%~nx0.ps1"
 @@ECHO !command! > "%ps1file%"
-@@START PowerShell -NoProfile -ExecutionPolicy Bypass -Command "& {Start-Process PowerShell -ArgumentList '-NoProfile -ExecutionPolicy Bypass -File ""%ps1file%""' -Verb RunAs}"
+@@START PowerShell -NoProfile -ExecutionPolicy Bypass -Command "& {Start-Process PowerShell -ArgumentList '-noexit -NoProfile -ExecutionPolicy Bypass -File ""%ps1file%""' -Verb RunAs}"
 @@goto:eof
-$ps1filename = Split-Path -Leaf $arguments[0]
-$ps1filepath = ('{0}\{1}.ps1' -f $env:temp, $ps1filename)
-Remove-Item "$ps1filepath"
-
-
-# powershell script starts here
+Clear-Host
+Remove-Item ('{0}\{1}.ps1' -f $env:temp, (Split-Path -Leaf $arguments[0]))
 
 function Write-Color([String[]]$Text, [ConsoleColor[]]$Color) {
 	for ($i = 0; $i -lt $Text.Length; $i++) {Write-Host $Text[$i] -Foreground $Color[$i] -NoNewLine}
@@ -67,8 +63,7 @@ function showmenu {
 	}
 
 	If (-Not $global:found) {
-		Write-Color -Text (' Menu item \`"{0}\`" not found' -f $choice) -Color Magenta
-		Write-Host " Menu item \`" $choice \`" not found"
+		Write-Color -Text (' Menu item "{0}" not found' -f $choice) -Color Magenta
 		TIMEOUT 5
 	}
 
@@ -83,19 +78,34 @@ function showmenu {
 
 
 $after = "PAUSE"
-$wd = Split-Path -Path $arguments[1]
-
-$shortcutsfile = $arguments[1]
-$shortcutstxt = Get-Content "$shortcutsfile"
-$shortcutstxt | Foreach-Object {
-	If ($_.StartsWith('##wd=')) {
-		$wd = $_.substring(5)
-	}
-	If ($_.StartsWith('##after=')) {
-		$after = $_.substring(8)
-	}
+If ($arguments[1]) {
+	$wd = Split-Path -Path $arguments[1]
+	$shortcutsfile = $arguments[1]
+} Else {
+	$wd = Split-Path -Path $arguments[0]
+	$shortcutsfile = ('{0}\shortcuts.txt' -f (Split-Path -Path $arguments[0]))
 }
 
-Set-Location "$wd"
+If (-Not (Test-Path $shortcutsfile)) {
 
-showmenu
+	Write-Host
+	Write-Color -Text ('shortcuts config "{0}" was not found' -f $shortcutsfile) -Color Magenta
+	Write-Host
+	PAUSE
+
+} Else {
+
+	$shortcutstxt = Get-Content "$shortcutsfile"
+	$shortcutstxt | Foreach-Object {
+		If ($_.StartsWith('##wd=')) {
+			$wd = $_.substring(5)
+		}
+		If ($_.StartsWith('##after=')) {
+			$after = $_.substring(8)
+		}
+	}
+
+	Set-Location "$wd"
+
+	showmenu
+}

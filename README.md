@@ -50,7 +50,7 @@ All blank lines are ignored.
 
 ## Usage
 Just double click ```shortcuts.bat``` to load ```shortcuts.txt``` (by default) then select a command by typing its number.
-The commands are run in the same folder as ```shortcuts.bat```.
+The commands are run in the same folder as ```shortcuts.txt```.
 
 You can use multiple files for configuring different custom menus, just drag any file (containing a configuration as shown above) onto ```shortcuts.bat```.
 
