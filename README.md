@@ -59,7 +59,7 @@ You can use multiple files for configuring different custom menus, just drag any
 ## Advanced Usage
 
 ### Change the working directory
-By default the menu commands are run from the folder that ```shortcuts.bat``` is in.
+By default the menu commands are run from the folder that ```shortcuts.txt``` is in.
 If you don't want any of these files to be included in your project folder and you can define a different folder by including ```##wd=``` in your ```shortcuts.txt``` to change the working directory for all commands.
 ```
 ##wd=c:\some\dir\path
