@@ -1,40 +1,38 @@
 @@ECHO off
+@@::http://stackoverflow.com/questions/9366080/batch-launching-powershell-with-a-multiline-command-parameter
 @@setlocal EnableDelayedExpansion
-@@REM lines 5 and 6 must both be blank
+@@::lines 5 and 6 must both be blank
 @@set LF=^
 
 
-@@IF [%1] EQU [] (SET "command=$shortcutsfile='%~dp0shortcuts.txt'") ELSE (SET "command=$shortcutsfile='%~f1'")
-@@SET "command=!command!!LF!$wd='%~dp0'"
+@@SET command=$arguments=@()
+@@SET command=!command!!LF!$arguments+="%~0"
+@@FOR %%x in (%*) do SET command=!command!!LF!$arguments+="%%~x"
 @@FOR /F "tokens=*" %%i in ('Findstr -bv @@ "%~f0"') DO SET command=!command!!LF!%%i
-@@START PowerShell -noexit -command !command! & goto:eof
+@@SET "ps1file=%temp%\%~nx0.ps1"
+@@ECHO !command! > "%ps1file%"
+@@START PowerShell -NoProfile -ExecutionPolicy Bypass -Command "& {Start-Process PowerShell -ArgumentList '-NoProfile -ExecutionPolicy Bypass -File ""%ps1file%""' -Verb RunAs}"
+@@goto:eof
+$ps1filename = Split-Path -Leaf $arguments[0]
+$ps1filepath = ('{0}\{1}.ps1' -f $env:temp, $ps1filename)
+Remove-Item "$ps1filepath"
 
-$shortcutstxt = Get-Content "$shortcutsfile"
-$shortcutstxt | Foreach-Object {
-	If ($_.StartsWith('##wd=')) {
-		$wd = $_.substring(5)
-	}
-	If ($_.StartsWith('##after=')) {
-		$after = $_.substring(8)
-	}
-}
 
-Set-Location "$wd"
+# powershell script starts here
 
 function Write-Color([String[]]$Text, [ConsoleColor[]]$Color) {
-	for ($i = 0; $i -lt $Text.Length; $i++) {Write-Host "$Text[$i]" -Foreground $Color[$i] -NoNewLine}
+	for ($i = 0; $i -lt $Text.Length; $i++) {Write-Host $Text[$i] -Foreground $Color[$i] -NoNewLine}
 	Write-Host
 }
 
 function showmenu {
-	
+
 	Clear-Host
 	Write-Host
+
 	Write-Color -Text ' shorcuts from:',"`t`t$shortcutsfile" -Color Gray,Green
 	Write-Color -Text ' working directory:',"`t$wd" -Color Gray,Green
-	If ($after) {
-		Write-Color -Text ' after each command:',"`t","`&",' ',$after -Color Gray,White,DarkGreen,DarkGreen,DarkGreen
-	}
+	Write-Color -Text ' after each command:',"`t","`&",' ',$after -Color Gray,White,DarkGreen,DarkGreen,DarkGreen
 
 	$global:count = 0
 	$shortcutstxt | Foreach-Object {
@@ -62,21 +60,42 @@ function showmenu {
 			$global:count++
 			If ($global:count -eq $choice) {
 				$global:found = $True
-				If ($after) {
-					$arguments = '/c ECHO {0} & {0} & {1}' -f $_, $after
-				} Else {
-					$arguments = '/c ECHO {0} & {0}' -f $_
-				}
-				Start-Process -FilePath "cmd.exe" -ArgumentList $arguments
+				$cmdarguments = ('/c ECHO "{0}" & ECHO. & {0} & ECHO. & {1}' -f $_, $after)
+				Start-Process -FilePath cmd -ArgumentList $cmdarguments
 			}
 		}
 	}
 
 	If (-Not $global:found) {
-	   Write-Host (' Menu item `"{0}`" not found' -f $choice) -fore Magenta
-	   TIMEOUT 5
+		Write-Color -Text (' Menu item \`"{0}\`" not found' -f $choice) -Color Magenta
+		Write-Host " Menu item \`" $choice \`" not found"
+		TIMEOUT 5
 	}
 
 	showmenu
 }
+
+
+
+
+
+
+
+
+$after = "PAUSE"
+$wd = Split-Path -Path $arguments[1]
+
+$shortcutsfile = $arguments[1]
+$shortcutstxt = Get-Content "$shortcutsfile"
+$shortcutstxt | Foreach-Object {
+	If ($_.StartsWith('##wd=')) {
+		$wd = $_.substring(5)
+	}
+	If ($_.StartsWith('##after=')) {
+		$after = $_.substring(8)
+	}
+}
+
+Set-Location "$wd"
+
 showmenu

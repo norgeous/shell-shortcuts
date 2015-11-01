@@ -52,31 +52,36 @@ All blank lines are ignored.
 Just double click ```shortcuts.bat``` to load ```shortcuts.txt``` (by default) then select a command by typing its number.
 The commands are run in the same folder as ```shortcuts.bat```.
 
-You can use multiple files for configuring different custom menus, just drag any ```*.txt``` file (containing a configuration as shown above) onto ```shortcuts.bat```.
+You can use multiple files for configuring different custom menus, just drag any file (containing a configuration as shown above) onto ```shortcuts.bat```.
 
 
 
 ## Advanced Usage
-
-### Chaining menu commands together
-You can chain together multiple commands to run as one menu entry in ```shortcuts.txt```, as you would in batch - with the ```&``` symbol.
-```
-#jspm
-jspm init & ECHO hello & PAUSE
-```
-
 
 ### Change the working directory
 By default the menu commands are run from the folder that ```shortcuts.bat``` is in.
 If you don't want any of these files to be included in your project folder and you can define a different folder by including ```##wd=``` in your ```shortcuts.txt``` to change the working directory for all commands.
 ```
 ##wd=c:\some\dir\path
-#jspm
-jspm init
-jspm install
-jspm-server
-jspm bundle lib/main --inject
-jspm unbundle
+```
+
+
+### Keeping the child ```cmd``` window open
+By default, the spawned ```cmd``` window will ```PAUSE``` after execution finishes. If you would like to adjust this behaviour add ```##after=``` to ```shortcuts.txt```
+To add a timeout instead, use:
+```
+##after=TIMEOUT 30
+```
+To keep the window open and allow further commands to be entered manually, use:
+```
+##after=CMD
+```
+
+
+### Chaining menu commands together
+You can chain together multiple commands to run as one menu entry in ```shortcuts.txt```, as you would in batch - with the ```&``` symbol.
+```
+jspm init & ECHO hello & PAUSE
 ```
 
 
@@ -85,39 +90,3 @@ If you like using ```shortcuts.bat``` and find yourself doing so regularly, you 
 Rename the extension of your ```shortcuts.txt``` config file(s) to something else that you know is unused on your system, for example ```shortcuts.ssc```.
 Then you can associate that file extension with ```shortcuts.bat``` using the ```Open With...``` dialogue.
 Now you can double click an ```.ssc``` file to open the custom menu.
-
-
-### Keeping the child ```cmd``` window open
-By default, the spawned ```cmd``` window will close after execution finishes. If you would like to review the output you can introduce a pause to all commands by adding ```##after=PAUSE``` to ```shortcuts.txt```
-```
-##after=PAUSE
-#jspm
-jspm init
-jspm install
-jspm-server
-jspm bundle lib/main --inject
-jspm unbundle
-```
-This will cause the batch command ```PAUSE``` to run in the spawned window immediately after the chosen command finishes, which waits for you to press a key before continuing.
-
-Alternatively you can use ```##after=TIMEOUT 30``` to close after a delay of 30 seconds.
-```
-##after=TIMEOUT 30
-#jspm
-jspm init
-jspm install
-jspm-server
-jspm bundle lib/main --inject
-jspm unbundle
-```
-
-Use ```##after=CMD``` to keep the window open and allow further commands to be entered manually.
-```
-##after=CMD
-#jspm
-jspm init
-jspm install
-jspm-server
-jspm bundle lib/main --inject
-jspm unbundle
-```
