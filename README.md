@@ -78,7 +78,7 @@ To keep the window open and allow further commands to be entered manually, use:
 ```
 
 
-### Chaining menu commands together
+### Chaining menu commands
 You can chain together multiple commands to run as one menu entry in ```shortcuts.txt```, as you would in batch - with the ```&``` symbol.
 ```
 jspm init & ECHO hello & PAUSE
@@ -87,6 +87,6 @@ jspm init & ECHO hello & PAUSE
 
 ### Application mode
 If you like using ```shortcuts.bat``` and find yourself doing so regularly, you can do the following trick.
-Rename the extension of your ```shortcuts.txt``` config file(s) to something else that you know is unused on your system, for example ```shortcuts.ssc```.
+Rename the extension of your ```shortcuts.txt``` config file(s) to something else that you know is unused on your system, for example ```.ssc```.
 Then you can associate that file extension with ```shortcuts.bat``` using the ```Open With...``` dialogue.
 Now you can double click an ```.ssc``` file to open the custom menu.
