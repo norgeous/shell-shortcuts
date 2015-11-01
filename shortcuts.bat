@@ -86,14 +86,8 @@ If ($arguments[1]) {
 	$shortcutsfile = ('{0}\shortcuts.txt' -f (Split-Path -Path $arguments[0]))
 }
 
-If (-Not (Test-Path $shortcutsfile)) {
-
-	Write-Host
-	Write-Color -Text ('shortcuts config "{0}" was not found' -f $shortcutsfile) -Color Magenta
-	Write-Host
-	PAUSE
-
-} Else {
+If (-Not (Test-Path $shortcutsfile)) {Write-Color -Text ('shortcuts config: "{0}" was not found' -f $shortcutsfile) -Color Magenta}
+Else {
 
 	$shortcutstxt = Get-Content "$shortcutsfile"
 	$shortcutstxt | Foreach-Object {
@@ -105,7 +99,10 @@ If (-Not (Test-Path $shortcutsfile)) {
 		}
 	}
 
-	Set-Location "$wd"
+	If (-Not (Test-Path $wd)) {Write-Color -Text ('working directory: "{0}" was not found' -f $wd) -Color Magenta}
+	Else {
+		Set-Location "$wd"
+		showmenu
+	}
 
-	showmenu
 }
