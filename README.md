@@ -66,7 +66,7 @@ If you don't want any of these files to be included in your project folder and y
 ```
 
 
-### Keeping the child ```cmd``` window open
+### Post execution behaviour
 By default, the spawned ```cmd``` window will ```PAUSE``` after execution finishes. If you would like to adjust this behaviour add ```##after=``` to ```shortcuts.txt```
 To add a timeout instead, use:
 ```
@@ -75,6 +75,10 @@ To add a timeout instead, use:
 To keep the window open and allow further commands to be entered manually, use:
 ```
 ##after=CMD
+```
+For automatic exit, use:
+```
+##after=EXIT
 ```
 
 
