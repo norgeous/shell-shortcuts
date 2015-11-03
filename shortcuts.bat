@@ -217,7 +217,7 @@ function Initialize-Shortcutsbat($Local:configlocation) {
 							kill $pid
 						}
 
-						{$_ -match '\d+'} {
+						{$_ -match '^^\d+$'} {
 
 							# choice is a number, so check that number matches a menu item by looping through (as previously)
 							$Local:count = 0
