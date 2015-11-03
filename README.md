@@ -90,3 +90,8 @@ If you like using ```shortcuts.bat``` and find yourself doing so regularly, you 
 Rename the extension of your ```shortcuts.txt``` config file(s) to something else that you know is unused on your system, for example ```.ssc```.
 Then you can associate that file extension with ```shortcuts.bat``` using the ```Open With...``` dialogue.
 Now you can double click an ```.ssc``` file to open the custom menu.
+
+
+### Hidden Commands
+* Type ```r``` to reload the ```shortcuts.txt``` configuration.
+* Type ```e``` to exit the script.

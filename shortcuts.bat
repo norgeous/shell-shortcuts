@@ -11,7 +11,8 @@
 @@FOR /F "tokens=*" %%i in ('Findstr -bv @@ "%~f0"') DO SET command=!command!!LF!%%i
 @@SET "ps1file=%temp%\%~nx0.ps1"
 @@ECHO !command! > "%ps1file%"
-@@START PowerShell -NoProfile -ExecutionPolicy Bypass -Command "& {Start-Process PowerShell -ArgumentList '-noexit -NoProfile -ExecutionPolicy Bypass -File ""%ps1file%""' -Verb RunAs}"
+@@::START PowerShell -NoProfile -ExecutionPolicy Bypass -Command "& {Start-Process PowerShell -ArgumentList '-NoExit -NoProfile -ExecutionPolicy Bypass -File ""%ps1file%""' -Verb RunAs}"
+@@START PowerShell -NoProfile -ExecutionPolicy Bypass -Command "& {Start-Process PowerShell -ArgumentList '-NoProfile -ExecutionPolicy Bypass -File ""%ps1file%""' -Verb RunAs}"
 @@goto:eof
 Clear-Host
 Remove-Item ('{0}\{1}.ps1' -f $env:temp, (Split-Path -Leaf $arguments[0]))
@@ -49,15 +50,26 @@ function showmenu {
 	$choice = Read-Host -prompt ' '
 	Write-Host
 
-	$global:count = 0
 	$global:found = $False
-	$shortcutstxt | Foreach-Object {
-		If ($_ -And -Not $_.StartsWith('#')) {
-			$global:count++
-			If ($global:count -eq $choice) {
-				$global:found = $True
-				$cmdarguments = ('/c ECHO "{0}" & ECHO. & {0} & ECHO. & {1}' -f $_, $after)
-				Start-Process -FilePath cmd -ArgumentList $cmdarguments
+
+	If ($choice -eq "e") {Exit}
+
+	If ($choice -eq "r") {
+		$shortcutstxt = Get-Content "$shortcutsfile"
+		$global:found = $True
+	}
+
+
+	If (-Not $global:found) {
+		$global:count = 0
+		$shortcutstxt | Foreach-Object {
+			If ($_ -And -Not $_.StartsWith('#')) {
+				$global:count++
+				If ($global:count -eq $choice) {
+					$global:found = $True
+					$cmdarguments = ('/c ECHO "{0}" & ECHO. & {0} & ECHO. & {1}' -f $_, $after)
+					Start-Process -FilePath cmd -ArgumentList $cmdarguments
+				}
 			}
 		}
 	}
