@@ -187,7 +187,7 @@ function Initialize-Shortcutsbat($Local:configlocation) {
 
 					# prompt user for input (either a number from the menu or 'e' for exit or 'r' for reload)
 					Write-Host
-					Write-Color -Text ' Enter command ','1',' to ',$Local:count,', ','e',' to exit, ','r',' to reload' -Color White,Cyan,White,Cyan,White,Cyan,White,Cyan,White
+					Write-Color -Text ' Enter menu item number (','1',' to ',$Local:count,')' -Color White,Cyan,White,Cyan,White
 					$Local:choice = Read-Host -prompt ' '
 					Write-Host
 
