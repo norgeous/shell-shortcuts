@@ -13,16 +13,17 @@
 @@START PowerShell -NoProfile -ExecutionPolicy Bypass -Command "& {Start-Process PowerShell -ArgumentList '-NoExit -NoProfile -ExecutionPolicy Bypass -File ""%ps1file%""' -Verb RunAs}"
 @@goto:eof
 # adminstrative powershell from now on
+# args passed to the bat are in the '$Script:arguments' array
 
 # location paths of the bat and ps1 files
 $Script:batfile = $Script:arguments[0]
 $Script:ps1file = ('{0}\{1}.ps1' -f $env:temp, (Split-Path -Leaf $Script:arguments[0]))
 
-# delete the temporary .ps1 file in %TEMP%
+# delete the temporary .ps1 file in %TEMP%, comment this line and check %temp% for debug
 Remove-Item $Script:ps1file
 
 ################################
-# end Polyglot code            #
+# end Polyglot code			#
 ################################
 
 # polyglot caveats:
@@ -49,13 +50,21 @@ function Write-Color([String[]]$Text, [ConsoleColor[]]$Color) {
 	Write-Host
 }
 
+# validation helpers
+function Test-StringEmpty($String){
+	return ([string]::IsNullOrEmpty($Local:String) -Or [string]::IsNullOrWhiteSpace($String))
+}
+function Test-PathExists($String){
+	return (-Not (Test-StringEmpty $Local:String) -And (Test-Path $Local:String))
+}
+
 # main logic
 function Initialize-Shortcutsbat($Local:configlocation) {
 
 	Clear-Host
 
 	# if no shortcuts config supplied
-	If (-Not $Local:configlocation) {
+	If (Test-StringEmpty $Local:configlocation) {
 
 		# set as same dir as bat file
 		$Local:shortcutsfile = ('{0}\shortcuts.txt' -f (Split-Path -Path $Script:batfile))
@@ -68,7 +77,7 @@ function Initialize-Shortcutsbat($Local:configlocation) {
 	}
 
 	# check shortcuts config file actually exists
-	If (-Not (Test-Path $Local:shortcutsfile)) {
+	If (-Not (Test-PathExists $Local:shortcutsfile)) {
 
 		Write-Host
 		Write-Color -Text (' Config file: "{0}" was not found' -f $Local:shortcutsfile) -Color Magenta
@@ -110,7 +119,7 @@ function Initialize-Shortcutsbat($Local:configlocation) {
 		# check config has at least one command
 		$Local:hascommands = $False
 		Foreach ($Local:line in $Local:shortcutstxt) {
-			If ($Local:line -And -Not $Local:line.StartsWith('#')) {
+			If (-Not (Test-StringEmpty $Local:line) -And -Not $Local:line.StartsWith('#')) {
 				$Local:hascommands = $True
 				break
 			}
@@ -129,7 +138,7 @@ function Initialize-Shortcutsbat($Local:configlocation) {
 			# 
 
 			# check that working dir exists
-			If (-Not (Test-Path $Local:wd)) {
+			If (-Not (Test-PathExists $Local:wd)) {
 
 				Write-Host
 				Write-Color -Text (' Working directory: "{0}" was not found' -f $Local:wd) -Color Magenta
@@ -168,7 +177,7 @@ function Initialize-Shortcutsbat($Local:configlocation) {
 					# show numbered menu
 					$Local:count = 0
 					Foreach ($Local:line in $Local:shortcutstxt) {
-						If ($Local:line -And -Not $Local:line.StartsWith('##')) {
+						If (-Not (Test-StringEmpty $Local:line) -And -Not $Local:line.StartsWith('##')) {
 							If ($Local:line.StartsWith('#')) {
 
 								# show section title
@@ -224,7 +233,7 @@ function Initialize-Shortcutsbat($Local:configlocation) {
 							Foreach ($Local:line in $Local:shortcutstxt) {
 
 								# if line not blank and not title or config option add to count
-								If ($Local:line -And -Not $Local:line.StartsWith('#')) {
+								If (-Not (Test-StringEmpty $Local:line) -And -Not $Local:line.StartsWith('#')) {
 									$Local:count++
 
 									# if count equals selection
